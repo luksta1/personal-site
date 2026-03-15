@@ -1,0 +1,30 @@
+:root {
+  /* Base */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-elevated: #1a1a1a;
+  --text-primary: #f0f0f0;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --border: #222222;
+
+  /* Accent — Sage */
+  --accent: #7ec8a0;
+  --accent-dim: #7ec8a033;
+  --accent-hover: #6bb58d;
+
+  /* Typography */
+  --font-display: 'Instrument Serif', serif;
+  --font-body: 'Satoshi', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --section-padding: clamp(4rem, 8vw, 8rem);
+  --content-max-width: 1200px;
+  --content-padding: clamp(1.5rem, 4vw, 3rem);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease;
+  --transition-slow: 500ms ease;
+}

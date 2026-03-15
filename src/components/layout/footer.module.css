@@ -1,0 +1,12 @@
+.footer {
+  padding: 2rem var(--content-padding);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.colophon {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
