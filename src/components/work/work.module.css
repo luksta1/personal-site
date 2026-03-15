@@ -37,6 +37,13 @@
   font-family: var(--font-display);
   font-size: 1.75rem;
   color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.cardMeta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
   margin-bottom: 1.25rem;
 }
 

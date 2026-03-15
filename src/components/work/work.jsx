@@ -21,6 +21,11 @@ export default function Work() {
               whileHover={{ y: -3 }}
             >
               <h3 className={styles.cardTitle}>{project.title}</h3>
+              {project.company && (
+                <p className={styles.cardMeta}>
+                  {project.company} · {project.role}
+                </p>
+              )}
               <div className={styles.problemSolution}>
                 <div>
                   <p className={styles.label}>Problem</p>

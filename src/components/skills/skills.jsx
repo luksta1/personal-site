@@ -6,7 +6,7 @@ const SKILLS = [
   {
     title: 'Frontend Architecture',
     description:
-      'Scalable, performant frontend systems built to last — from component libraries and state management to cross-team patterns that keep velocity high.',
+      'Scalable frontend systems built on module federation and micro frontends — with robust state management and caching strategies that keep velocity high.',
   },
   {
     title: 'User-Focused Products',
@@ -14,14 +14,14 @@ const SKILLS = [
       'End-to-end product delivery from planning and strategy through launch. I build features users actually love, backed by real metrics.',
   },
   {
-    title: 'Cross-Team Collaboration',
+    title: 'Data-Driven Interfaces',
     description:
-      'Creating synergy between product, design, and engineering — bridging the gap so teams ship faster without sacrificing quality.',
+      'Real-time dashboards, live visualizations, and complex data-heavy UIs that turn raw information into clear, actionable insight.',
   },
   {
-    title: 'UI & UX Engineering',
+    title: 'Developer Experience',
     description:
-      'High-quality interfaces with accessibility, performance, and the customer experience baked in from day one. Every interaction matters.',
+      'Internal tooling, MCP servers, and onboarding flows that make other engineers faster — because great DX compounds across the whole org.',
   },
 ];
 

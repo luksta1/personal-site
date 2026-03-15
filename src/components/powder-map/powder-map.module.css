@@ -4,6 +4,7 @@
   height: 100dvh;
   width: 100%;
   background: var(--bg-primary);
+  overflow: hidden;
 }
 
 .header {
@@ -32,44 +33,141 @@
 .mapContainer {
   position: absolute;
   inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
 }
 
-.marker {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2px solid var(--bg-primary);
-  box-shadow: 0 0 12px var(--accent-dim);
+.mapContainer:active {
+  cursor: grabbing;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+}
+
+.geography {
+  fill: var(--bg-elevated);
+  stroke: var(--border);
+  stroke-width: 0.5;
+  outline: none;
+  transition: fill var(--transition-fast);
+}
+
+.geography:hover {
+  fill: #1f1f1f;
+}
+
+/* ── Beacon markers ────────────────────────────────────── */
+
+.beacon {
   cursor: pointer;
-  transition: transform var(--transition-fast);
+  outline: none;
 }
 
-.marker:hover {
-  transform: scale(1.4);
+.beacon:focus-visible .beaconDot {
+  stroke: var(--accent);
+  stroke-width: 2;
 }
+
+.beaconDot {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 6px var(--accent-dim));
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: transform var(--transition-fast);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.beacon:hover .beaconDot {
+  transform-origin: center;
+  transform-box: fill-box;
+  transform: scale(1.5);
+}
+
+.beaconPulse {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: pulse 3s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+    stroke-width: 2;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+    stroke-width: 0.5;
+  }
+}
+
+/* ── Zoom hint ─────────────────────────────────────────── */
+
+.zoomHint {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Popup card ────────────────────────────────────────── */
 
 .popup {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, calc(-100% - 20px));
   background: var(--bg-elevated);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.25rem;
-  min-width: 220px;
-  font-family: var(--font-body);
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-width: 240px;
+  max-width: 300px;
+  pointer-events: auto;
+}
+
+.popupClose {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.popupClose:hover {
+  color: var(--text-primary);
 }
 
 .popupName {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
 }
 
 .popupMeta {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+  min-height: 1.2rem;
 }
 
 .popupYear {
@@ -89,19 +187,35 @@
   border-radius: 3px;
 }
 
+.popupLocation {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
 .popupMemory {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
   font-style: italic;
 }
 
-.fallback {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
+@media (prefers-reduced-motion: reduce) {
+  .beaconPulse {
+    animation: none;
+    opacity: 0.3;
+    transform: scale(2.5);
+    stroke-width: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .popup {
+    left: 50% !important;
+    top: auto !important;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
+    max-width: calc(100% - 2 * var(--content-padding));
+  }
 }

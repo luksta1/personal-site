@@ -3,9 +3,9 @@ import useScrollReveal from '../../hooks/use-scroll-reveal';
 import styles from './contact.module.css';
 
 const LINKS = [
-  { label: 'Email', href: 'mailto:hello@lukepura.com' },
-  { label: 'GitHub', href: 'https://github.com/lukepura' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/lukepura' },
+  { label: 'Email', href: 'mailto:lukepura@gmail.com' },
+  { label: 'GitHub', href: 'https://github.com/luksta1' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/lukepura/' },
 ];
 
 export default function Contact() {
@@ -16,8 +16,8 @@ export default function Contact() {
       <div className={styles.container} ref={ref}>
         <h2 className={styles.heading}>Let's Talk</h2>
         <p className={styles.subtext}>
-          I'm looking for teams that care about their users as much as their
-          code. If you're building something ambitious, let's talk.
+          Whether it's a side project, a collaboration, or just talking shop
+          — if you're building something ambitious, let's talk.
         </p>
 
         <nav className={styles.links} aria-label="Social links">

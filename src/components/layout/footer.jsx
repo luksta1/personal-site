@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <p className={styles.colophon}>
-        Built with React, Vite &amp; Rspack. Deployed on Netlify.
+        Be so good they can't ignore you. 🇵🇱
       </p>
     </footer>
   );

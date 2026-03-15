@@ -1,104 +1,155 @@
-import { useState, useCallback } from 'react';
-import Map, { Marker, Popup } from 'react-map-gl/mapbox';
+import { useState, useCallback, useRef, memo } from 'react';
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+  Marker,
+} from 'react-simple-maps';
+import { AnimatePresence, motion } from 'framer-motion';
 import resorts from '../../data/resorts';
 import styles from './powder-map.module.css';
-import 'mapbox-gl/dist/mapbox-gl.css';
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
+const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
-const MAP_STYLE = 'mapbox://styles/mapbox/dark-v11';
-const INITIAL_VIEW = {
-  longitude: -40,
-  latitude: 45,
-  zoom: 2.2,
-  pitch: 0,
-  bearing: 0,
-};
+const MapGeographies = memo(function MapGeographies() {
+  return (
+    <Geographies geography={GEO_URL}>
+      {({ geographies }) =>
+        geographies.map((geo) => (
+          <Geography
+            key={geo.rsmKey}
+            geography={geo}
+            className={styles.geography}
+            tabIndex={-1}
+          />
+        ))
+      }
+    </Geographies>
+  );
+});
 
 export default function PowderMap() {
-  const [selectedResort, setSelectedResort] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const sectionRef = useRef(null);
 
-  const handleMarkerClick = useCallback((resort) => {
-    setSelectedResort(resort);
+  const handleClick = useCallback((resort, e) => {
+    const nativeEvent = e?.nativeEvent || e;
+    if (nativeEvent && sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect();
+      setPopupPos({
+        x: (nativeEvent.clientX || 0) - rect.left,
+        y: (nativeEvent.clientY || 0) - rect.top,
+      });
+    }
+    setSelected((prev) => (prev?.id === resort.id ? null : resort));
   }, []);
 
-  if (!MAPBOX_TOKEN) {
-    return (
-      <section className={styles.section} id="powder-map" aria-label="Powder Map">
-        <div className={styles.header}>
-          <h2 className={styles.heading}>Powder Map</h2>
-          <p className={styles.subtitle}>Resorts ridden — {resorts.length} and counting</p>
-        </div>
-        <div className={styles.fallback}>
-          <span>Set VITE_MAPBOX_TOKEN to enable the map</span>
-        </div>
-      </section>
-    );
-  }
+  const handleMapClick = useCallback((e) => {
+    if (e.target.closest(`.${styles.beacon}`)) return;
+    setSelected(null);
+  }, []);
 
   return (
-    <section className={styles.section} id="powder-map" aria-label="Powder Map">
+    <section
+      ref={sectionRef}
+      className={styles.section}
+      id="powder-map"
+      aria-label="Powder Map"
+    >
       <div className={styles.header}>
         <h2 className={styles.heading}>Powder Map</h2>
-        <p className={styles.subtitle}>Resorts ridden — {resorts.length} and counting</p>
+        <p className={styles.subtitle}>
+          Resorts ridden — {resorts.length} and counting
+        </p>
       </div>
 
-      <div className={styles.mapContainer}>
-        <Map
-          initialViewState={INITIAL_VIEW}
-          style={{ width: '100%', height: '100%' }}
-          mapStyle={MAP_STYLE}
-          mapboxAccessToken={MAPBOX_TOKEN}
-          attributionControl={false}
-          interactive
+      <div className={styles.mapContainer} onClick={handleMapClick}>
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{ scale: 140, center: [0, 35] }}
+          className={styles.svg}
         >
-          {resorts.map((resort) => (
-            <Marker
-              key={resort.id}
-              longitude={resort.coordinates[0]}
-              latitude={resort.coordinates[1]}
-              anchor="center"
-              onClick={(e) => {
-                e.originalEvent.stopPropagation();
-                handleMarkerClick(resort);
-              }}
-            >
-              <div
-                className={styles.marker}
-                role="button"
-                tabIndex={0}
-                aria-label={`${resort.name}, ${resort.location}`}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    handleMarkerClick(resort);
-                  }
-                }}
-              />
-            </Marker>
-          ))}
+          <ZoomableGroup
+            minZoom={1}
+            maxZoom={8}
+            translateExtent={[[-200, -200], [1000, 600]]}
+            onMove={({ zoom: z }) => setZoom(z)}
+          >
+            <MapGeographies />
 
-          {selectedResort && (
-            <Popup
-              longitude={selectedResort.coordinates[0]}
-              latitude={selectedResort.coordinates[1]}
-              anchor="bottom"
-              onClose={() => setSelectedResort(null)}
-              closeOnClick={false}
-              offset={12}
-              className={styles.popupWrapper}
-            >
-              <div className={styles.popup}>
-                <h3 className={styles.popupName}>{selectedResort.name}</h3>
-                <div className={styles.popupMeta}>
-                  <span className={styles.popupYear}>{selectedResort.year}</span>
-                  <span className={styles.popupTag}>{selectedResort.tag}</span>
-                </div>
-                <p className={styles.popupMemory}>{selectedResort.memory}</p>
-              </div>
-            </Popup>
-          )}
-        </Map>
+            {resorts.map((resort) => (
+              <Marker
+                key={resort.id}
+                coordinates={resort.coordinates}
+              >
+                <g className={styles.beacon}>
+                  <circle
+                    r={12 / zoom}
+                    className={styles.beaconPulse}
+                    style={{ animationDelay: `${resort.id * 0.4}s` }}
+                  />
+                  <circle
+                    r={4 / zoom}
+                    className={styles.beaconDot}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${resort.name}, ${resort.location}`}
+                    onClick={(e) => handleClick(resort, e)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') handleClick(resort, e);
+                    }}
+                  />
+                </g>
+              </Marker>
+            ))}
+          </ZoomableGroup>
+        </ComposableMap>
       </div>
+
+      <div className={styles.zoomHint} aria-hidden="true">
+        Scroll to zoom · Drag to pan
+      </div>
+
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            key={selected.id}
+            className={styles.popup}
+            style={popupPos.x ? {
+              left: popupPos.x,
+              top: popupPos.y,
+            } : undefined}
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+          >
+            <button
+              className={styles.popupClose}
+              onClick={() => setSelected(null)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <h3 className={styles.popupName}>{selected.name}</h3>
+            <div className={styles.popupMeta}>
+              {selected.year && (
+                <span className={styles.popupYear}>{selected.year}</span>
+              )}
+              {selected.tag && (
+                <span className={styles.popupTag}>{selected.tag}</span>
+              )}
+            </div>
+            <p className={styles.popupLocation}>{selected.location}</p>
+            {selected.memory && (
+              <p className={styles.popupMemory}>{selected.memory}</p>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

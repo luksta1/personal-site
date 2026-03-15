@@ -6,11 +6,6 @@ export default defineConfig({
   plugins: [pluginReact()],
   source: {
     entry: { index: "./src/main.jsx" },
-    define: {
-      "import.meta.env.VITE_MAPBOX_TOKEN": JSON.stringify(
-        process.env.VITE_MAPBOX_TOKEN || "",
-      ),
-    },
   },
   html: {
     title: "Luke Pura — Lead Software Engineer",

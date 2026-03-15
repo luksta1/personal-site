@@ -4,9 +4,9 @@ import styles from './about.module.css';
 const ICONS = {
   listening: '♫',
   building: '⌘',
-  eating: '◉',
+  restaurant: '◉',
   mountain: '▲',
-  reading: '¶',
+  cocktail: '¶',
 };
 
 export default function Currently() {

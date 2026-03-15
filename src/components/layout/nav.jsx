@@ -36,7 +36,7 @@ export default function Nav() {
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         aria-label="Scroll to top"
       >
-        LP
+        // Luke Pura
       </button>
 
       <div className={styles.links}>

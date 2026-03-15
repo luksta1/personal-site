@@ -13,11 +13,11 @@
     "@react-three/fiber": "^9.5.0",
     "framer-motion": "^12.36.0",
     "gsap": "^3.14.2",
-    "mapbox-gl": "^3.20.0",
+    "prop-types": "^15.8.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-map-gl": "^8.1.0",
     "react-router-dom": "^7.13.1",
+    "react-simple-maps": "^3.0.0",
     "three": "^0.183.2"
   },
   "devDependencies": {
