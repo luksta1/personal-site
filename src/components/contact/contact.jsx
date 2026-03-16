@@ -37,7 +37,7 @@ export default function Contact() {
         </nav>
 
         <motion.a
-          href="/luke-pura-cv.pdf"
+          href="/assets/lukepura-resume-2026.pdf"
           className={styles.cvButton}
           download
           whileHover={{ scale: 1.02 }}
