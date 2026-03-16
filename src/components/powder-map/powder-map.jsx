@@ -36,6 +36,7 @@ export default function PowderMap() {
   const sectionRef = useRef(null);
 
   const handleClick = useCallback((resort, e) => {
+    e.stopPropagation();
     const nativeEvent = e?.nativeEvent || e;
     if (nativeEvent && sectionRef.current) {
       const rect = sectionRef.current.getBoundingClientRect();
@@ -92,8 +93,8 @@ export default function PowderMap() {
                     style={{ animationDelay: `${resort.id * 0.4}s` }}
                   />
                   <circle
-                    r={4 / zoom}
-                    className={styles.beaconDot}
+                    r={16 / zoom}
+                    className={styles.beaconHitArea}
                     role="button"
                     tabIndex={0}
                     aria-label={`${resort.name}, ${resort.location}`}
@@ -101,6 +102,11 @@ export default function PowderMap() {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') handleClick(resort, e);
                     }}
+                  />
+                  <circle
+                    r={4 / zoom}
+                    className={styles.beaconDot}
+                    pointerEvents="none"
                   />
                 </g>
               </Marker>

@@ -9,6 +9,14 @@ export default defineConfig({
   },
   html: {
     title: "Luke Pura — Lead Software Engineer",
+    favicon: "./public/favicon.ico",
+    appIcon: {
+      icons: [
+        { src: "./public/apple-touch-icon.png", size: 180 },
+        { src: "./public/android-chrome-192x192.png", size: 192 },
+        { src: "./public/android-chrome-512x512.png", size: 512 },
+      ],
+    },
     meta: {
       description:
         "Portfolio of Luke Pura — lead software engineer specializing in user-focused products and scalable frontend systems.",

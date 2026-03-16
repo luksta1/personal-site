@@ -67,9 +67,16 @@
   outline: none;
 }
 
-.beacon:focus-visible .beaconDot {
+.beaconHitArea:focus-visible ~ .beaconDot {
   stroke: var(--accent);
   stroke-width: 2;
+}
+
+.beaconHitArea {
+  fill: transparent;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .beaconDot {
@@ -78,8 +85,6 @@
   transform-origin: center;
   transform-box: fill-box;
   transition: transform var(--transition-fast);
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .beacon:hover .beaconDot {

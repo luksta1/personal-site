@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'react';
-import * as THREE from 'three';
+import { useRef, useEffect } from "react";
+import * as THREE from "three";
 
 const VERTEX = `
 void main() {
@@ -135,7 +135,7 @@ void main() {
 // ────────────────────────────────────────────────────────────────────
 
 function prefersReducedMotion() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 export default function HaloEffect() {
@@ -153,7 +153,7 @@ export default function HaloEffect() {
     renderer.setPixelRatio(dpr);
     renderer.setSize(width, height);
     renderer.domElement.style.cssText =
-      'position:absolute;inset:0;width:100%;height:100%';
+      "position:absolute;inset:0;width:100%;height:100%";
     container.appendChild(renderer.domElement);
 
     const plane = new THREE.PlaneGeometry(2, 2);
@@ -166,10 +166,14 @@ export default function HaloEffect() {
       magFilter: THREE.LinearFilter,
     };
     let bufferA = new THREE.WebGLRenderTarget(
-      width * dpr, height * dpr, rtOpts
+      width * dpr,
+      height * dpr,
+      rtOpts,
     );
     let bufferB = new THREE.WebGLRenderTarget(
-      width * dpr, height * dpr, rtOpts
+      width * dpr,
+      height * dpr,
+      rtOpts,
     );
 
     const bgColor = new THREE.Color(0x0a0a0a);
@@ -220,19 +224,19 @@ export default function HaloEffect() {
     // ── Load mountain image (optional — falls back gracefully) ─────
     const loader = new THREE.TextureLoader();
     loader.load(
-      '/mountain-hero.jpg',
+      "/assets/mountain-hero.jpg",
       (tex) => {
         tex.minFilter = THREE.LinearFilter;
         tex.magFilter = THREE.LinearFilter;
         compositeUniforms.uImage.value = tex;
         compositeUniforms.uImageSize.value.set(
           tex.image.width,
-          tex.image.height
+          tex.image.height,
         );
         compositeUniforms.uHasImage.value = 1.0;
       },
       undefined,
-      () => {} // no image, halo-only mode
+      () => {}, // no image, halo-only mode
     );
 
     // ── Mouse tracking ─────────────────────────────────────────────
@@ -259,9 +263,9 @@ export default function HaloEffect() {
       }
     };
 
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    window.addEventListener('scroll', onMouseMove, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("scroll", onMouseMove, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
 
     // ── Resize ─────────────────────────────────────────────────────
     const onResize = () => {
@@ -272,7 +276,7 @@ export default function HaloEffect() {
       bufferA.setSize(width * dpr, height * dpr);
       bufferB.setSize(width * dpr, height * dpr);
     };
-    window.addEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
 
     // ── Render loop ────────────────────────────────────────────────
     let prevTime = performance.now();
@@ -316,10 +320,10 @@ export default function HaloEffect() {
     // ── Cleanup ────────────────────────────────────────────────────
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('scroll', onMouseMove);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("scroll", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("resize", onResize);
       renderer.dispose();
       bufferA.dispose();
       bufferB.dispose();
@@ -337,7 +341,7 @@ export default function HaloEffect() {
   return (
     <div
       ref={containerRef}
-      style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+      style={{ position: "absolute", inset: 0, zIndex: 0 }}
       aria-hidden="true"
     />
   );
