@@ -26,6 +26,10 @@
   color: var(--text-primary);
 }
 
+.shortName {
+  display: none;
+}
+
 .links {
   display: flex;
   gap: 2rem;
@@ -45,7 +49,15 @@
   color: var(--accent);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
+  .fullName {
+    display: none;
+  }
+
+  .shortName {
+    display: inline;
+  }
+
   .links {
     gap: 1.25rem;
   }
