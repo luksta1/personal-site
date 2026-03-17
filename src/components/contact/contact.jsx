@@ -27,7 +27,7 @@ export default function Contact() {
               href={link.href}
               className={styles.link}
               target={link.href.startsWith('mailto') ? undefined : '_blank'}
-              rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+              rel={link.href.startsWith('mailto') ? undefined : 'me noopener noreferrer'}
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.97 }}
             >

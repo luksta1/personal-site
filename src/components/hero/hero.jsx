@@ -36,7 +36,7 @@ export default function Hero() {
       </div>
 
       <div className={styles.content}>
-        <h1 className={styles.name} ref={nameRef}>
+        <h1 className={styles.name} ref={nameRef} aria-label="Luke Pura">
           {NAME.split("").map((char, i) =>
             char === " " ? (
               <span key={i} className={styles.space} />

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /assets/
+
+# Disallow any private areas if added later
+# Disallow: /admin/
+
+Sitemap: https://lukepura.com/sitemap.xml
